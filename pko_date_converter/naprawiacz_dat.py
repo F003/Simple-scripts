@@ -5,13 +5,14 @@ def convert_date_format(file_path):
     # Read the Excel file
     df = pd.read_excel(file_path)
 
-    # Convert the date columns to datetime format
-    df['Data operacji'] = pd.to_datetime(df['Data operacji'], format="'%Y-%m-%d'")
-    df['Data waluty'] = pd.to_datetime(df['Data waluty'], format="'%Y-%m-%d'")
+    print(df)
+    # # Convert the date columns to datetime format
+    # df['Data operacji'] = pd.to_datetime(df['Data operacji'], format="%Y-%m-%d'")
+    # df['Data waluty'] = pd.to_datetime(df['Data waluty'], format="%Y-%m-%d'")
 
-    # Convert the date format to dd.mm.yyyy
-    df['Data operacji'] = df['Data operacji'].dt.strftime('%d.%m.%Y')
-    df['Data waluty'] = df['Data waluty'].dt.strftime('%d.%m.%Y')
+    # # Convert the date format to dd.mm.yyyy
+    # df['Data operacji'] = df['Data operacji'].dt.strftime('%d.%m.%Y')
+    # df['Data waluty'] = df['Data waluty'].dt.strftime('%d.%m.%Y')
 
     return df
 
