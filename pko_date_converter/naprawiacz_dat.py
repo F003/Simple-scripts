@@ -1,61 +1,23 @@
 import pandas as pd
-from tkinter import Tk, filedialog, messagebox
+import tkinter as tk
+from tkinter import filedialog
 
-def convert_date_format(file_path):
-    # Read the Excel file
-    df = pd.read_excel(file_path)
+# Function to convert the date format
+def convert_date_format(input_file, output_file):
+    df = pd.read_excel(input_file)  # Read the Excel file into a DataFrame
+    df['Date Column'] = pd.to_datetime(df['Date Column']).dt.strftime('%d.%m.%Y')
+    df.to_excel(output_file, index=False)  # Save the DataFrame to a new Excel file
 
-    print(df)
-    # # Convert the date columns to datetime format
-    # df['Data operacji'] = pd.to_datetime(df['Data operacji'], format="%Y-%m-%d'")
-    # df['Data waluty'] = pd.to_datetime(df['Data waluty'], format="%Y-%m-%d'")
-
-    # # Convert the date format to dd.mm.yyyy
-    # df['Data operacji'] = df['Data operacji'].dt.strftime('%d.%m.%Y')
-    # df['Data waluty'] = df['Data waluty'].dt.strftime('%d.%m.%Y')
-
-    return df
-
-def choose_file():
-    # Open a file dialog to select the Excel file
-    root = Tk()
-    root.withdraw()
-    file_path = filedialog.askopenfilename(filetypes=[("Excel Files", "*.xls;*.xlsx")])
-    root.destroy()
-
-    return file_path
-
-def choose_save_location():
-    # Open a file dialog to choose the save location for the new Excel file
-    root = Tk()
-    root.withdraw()
-    save_path = filedialog.asksaveasfilename(defaultextension=".xlsx", filetypes=[("Excel Files", "*.xlsx")])
-    root.destroy()
-
-    return save_path
-
+# Function to handle the button click event
 def start_conversion():
-    try:
-        file_path = choose_file()
+    input_path = filedialog.askopenfilename(title='Select Input File', filetypes=[('Excel Files', '*.xls;*.xlsx')])
+    output_path = filedialog.asksaveasfilename(title='Select Output File', defaultextension='.xlsx')
+    convert_date_format(input_path, output_path)
+    print("Conversion completed successfully!")
 
-        if not file_path:
-            messagebox.showinfo("Błąd", "Nie wybrano pliku.")
-            return
-
-        df = convert_date_format(file_path)
-
-        save_path = choose_save_location()
-
-        if not save_path:
-            messagebox.showinfo("Błąd", "Nie wybrano lokalizacji zapisu.")
-            return
-
-        # Save the converted DataFrame as a new Excel file
-        df.to_excel(save_path, index=False)
-        messagebox.showinfo("Plik zmieniony i zapisany")
-
-    except Exception as e:
-        messagebox.showinfo("Błąd", f"Kod: {str(e)}")
-
-# Run the program
-start_conversion()
+# Create a simple GUI using tkinter
+window = tk.Tk()
+window.title("Date Format Conversion")
+button = tk.Button(window, text="Start Conversion", command=start_conversion)
+button.pack()
+window.mainloop()
